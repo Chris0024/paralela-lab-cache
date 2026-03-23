@@ -1,15 +1,16 @@
 #include <iostream>
-#include <vector>
 #include <chrono>
 
 using namespace std;
 using namespace std::chrono;
 
-int main() {
-    int MAX = 1000;
+#define MAX 5000
 
-    vector<vector<double>> A(MAX, vector<double>(MAX));
-    vector<double> x(MAX), y(MAX);
+double A[MAX][MAX];
+double x[MAX];
+double y[MAX];
+
+int main() {
 
     // Inicializar
     for (int i = 0; i < MAX; i++) {
@@ -20,7 +21,7 @@ int main() {
         }
     }
 
-    //  Caso 1:
+    // Caso 1: i-j
     auto start1 = high_resolution_clock::now();
 
     for (int i = 0; i < MAX; i++) {
@@ -30,14 +31,16 @@ int main() {
     }
 
     auto end1 = high_resolution_clock::now();
-    auto duration1 = duration_cast<milliseconds>(end1 - start1);
+    cout << "Tiempo (i-j): "
+         << duration_cast<milliseconds>(end1 - start1).count()
+         << " ms" << endl;
 
-    cout << "Tiempo (i-j): " << duration1.count() << " ms" << endl;
+    // Reset
+    for (int i = 0; i < MAX; i++) {
+        y[i] = 0;
+    }
 
-    // Reset y
-    fill(y.begin(), y.end(), 0);
-
-   //  Caso 2:
+    // Caso 2: j-i
     auto start2 = high_resolution_clock::now();
 
     for (int j = 0; j < MAX; j++) {
@@ -47,9 +50,9 @@ int main() {
     }
 
     auto end2 = high_resolution_clock::now();
-    auto duration2 = duration_cast<milliseconds>(end2 - start2);
-
-    cout << "Tiempo (j-i): " << duration2.count() << " ms" << endl;
+    cout << "Tiempo (j-i): "
+         << duration_cast<milliseconds>(end2 - start2).count()
+         << " ms" << endl;
 
     return 0;
 }
